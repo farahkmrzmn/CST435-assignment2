@@ -159,9 +159,8 @@ This project requires **Python 3.10.9** and the following Python libraries:
 ```bash
 # Verify Python version
 python3 --version
-# Should output: Python 3.10.9
 
-# Create a virtual environment (recommended)
+# Create a virtual environment
 python3.10 -m venv venv
 source venv/bin/activate
 
