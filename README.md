@@ -154,6 +154,16 @@ These metrics are used to analyze scalability and resource utilization.
 ## How to Run
 
 ### Prerequisites
-Install required Python libraries:
+This project requires **Python 3.10.9** and the following Python libraries:
+
 ```bash
-pip install opencv-python numpy
+# Verify Python version
+python3 --version
+# Should output: Python 3.10.9
+
+# Create a virtual environment (recommended)
+python3.10 -m venv venv
+source venv/bin/activate
+
+# Install required libraries
+pip install numpy==1.25.2 opencv-python-headless==4.12.0.88
