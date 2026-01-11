@@ -9,7 +9,8 @@ parallel programming paradigms.
 
 Two Python-based parallel implementations are provided:
 1. Python multiprocessing
-2. Python concurrent.futures
+2. Python Concurrent Process – using concurrent.futures.ProcessPoolExecutor
+3. Python Concurrent Thread – using concurrent.futures.ThreadPoolExecutor
 
 Both implementations apply the same image processing pipeline to ensure fair
 and meaningful performance comparison.
@@ -76,6 +77,46 @@ filtering are CPU-bound tasks. Python multiprocessing is chosen because it:
 This approach ensures efficient utilization of available CPU cores on the
 GCP virtual machine.
 
+---
+
+## Implementation 2: Python concurrent.futures.ProcessPoolExecutor
+**File:** `concurrent_process.py`
+
+### Parallel Paradigm
+- **Paradigm:** Process-based concurrency using executor
+- **Module:** Python `concurrent.futures.ProcessPoolExecutor`
+- **Parallel Model:** Data parallelism
+
+### Parallelization Strategy
+This implementation uses ProcessPoolExecutor to create multiple 
+worker processes. Each worker independently processes a single 
+image through the complete image processing pipeline.
+
+The workload is distributed by submitting all image tasks to the 
+executor, which automatically assigns different images to different 
+worker processes. No locks or shared memory are required because the images are independent.
+
+### Rationale and Design Decisions
+Using processes for CPU-intensive image processing allows the workload to run in parallel on multiple cores. This approach is similar to multiprocessing but uses the concurrent.futures executor for easier management.
+
+---
+
+## Implementation 3: Python concurrent.futures.ThreadPoolExecutor
+**File:** `concurrent_thread.py`
+
+### Parallel Paradigm
+- **Paradigm:** Thread-based concurrency using executor
+- **Module:** Python `concurrent.futures.ThreadPoolExecutor`
+- **Parallel Model:** Data parallelism
+
+### Parallelization Strategy
+Each image is processed by a separate thread. The executor manages task assignment automatically. Since threads share memory, there is no need for explicit locks here because each thread works independently on its image.
+
+### Rationale and Design Decisions
+Threads have lower overhead than processes, but CPU-bound tasks are limited by Python’s GIL. This implementation is mainly used for comparison with process-based approaches and to study concurrency effects.
+
+---
+
 ### Load Balancing and Synchronization
 - Each process handles one image at a time
 - Tasks are evenly distributed across workers
@@ -99,38 +140,6 @@ The following performance metrics are calculated:
 - **Parallel Efficiency**
 
 These metrics are used to analyze scalability and resource utilization.
-
----
-
-## Implementation 2: Python concurrent.futures
-**File:** `image_concurrent.py`
-
-### Parallel Paradigm
-- **Paradigm:** Executor-based parallelism
-- **Module:** Python `concurrent.futures`
-
-### Parallelization Strategy
-> 
-
-### Rationale and Design Decisions
-> 
-
-### Performance Evaluation
-> 
-
----
-
-## Performance Analysis
-Both implementations are tested on the same dataset and execution environment
-to ensure fair comparison.
-
-Performance is evaluated using:
-- Execution time
-- Speedup
-- Parallel efficiency
-
-Results are analyzed to study scalability, bottlenecks, and the impact of
-parallel overhead in real-world cloud environments.
 
 ---
 
